@@ -1,76 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Real Flame Animation on White</title>
-  <style>
-    body {
-      margin: 0;
-      background: #ffffff; /* changed to white */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .flame-container {
-      width: 150px;
-      height: 200px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .flame svg {
-      width: 100%;
-      height: 100%;
-    }
-    .flame path.outer {
-      fill: #FF6D00;
-      animation: flameMove 1.3s infinite ease-in-out alternate;
-    }
-    .flame path.middle {
-      fill: #FF9800;
-      animation: flameMove 1.2s infinite ease-in-out alternate;
-    }
-    .flame path.inner {
-      fill: #FFEB3B;
-      animation: flameMove 1.1s infinite ease-in-out alternate;
-    }
-    @keyframes flameMove {
-      0% {
-        transform: translateY(0px) scaleX(1) scaleY(1);
-      }
-      50% {
-        transform: translateY(-4px) scaleX(1.02) scaleY(1.05);
-      }
-      100% {
-        transform: translateY(0px) scaleX(1) scaleY(1);
-      }
-    }
-    .flame-text {
-      margin-top: 10px;
-      font-family: Arial, sans-serif;
-      font-size: 24px;
-      font-weight: bold;
-      color: #FF6D00;
-      text-transform: uppercase;
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance Tracker</title>
 </head>
-<body>
-<div class="flame-container">
-  <div class="flame">
-    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <!-- Outer flame -->
-      <path class="outer" d="M32 2c-6 10-14 16-14 26s6 18 14 18 14-8 14-18-8-16-14-26z"/>
-      <!-- Middle flame -->
-      <path class="middle" d="M32 8c-4 7-10 12-10 20s4 14 10 14 10-6 10-14-6-13-10-20z"/>
-      <!-- Inner flame -->
-      <path class="inner" d="M32 18c-2 3-5 6-5 10s2 7 5 7 5-3 5-7-3-7-5-10z"/>
-    </svg>
-  </div>
-  <div class="flame-text">flame</div>
-</div>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #333;">
+    
+    <div style="max-width: 1000px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden;">
+        
+        <!-- Header -->
+        <div style="background: linear-gradient(45deg, #4CAF50, #45a049); color: white; padding: 30px; text-align: center;">
+            <h1 style="margin: 0; font-size: 2.5em; font-weight: 300; letter-spacing: 2px;">📚 Student Attendance Tracker</h1>
+            <p style="margin: 10px 0 0 0; opacity: 0.9; font-size: 1.1em;">Track and manage student attendance with ease</p>
+        </div>
+
+        <div style="padding: 30px;">
+            
+            <!-- Add Student Section -->
+            <div style="background: #f8f9fa; border-radius: 10px; padding: 25px; margin-bottom: 30px; border-left: 5px solid #4CAF50;">
+                <h2 style="margin: 0 0 20px 0; color: #2c3e50; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2em;">👨‍🎓</span> Add New Student
+                </h2>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: end;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Student Name</label>
+                        <input type="text" id="studentName" placeholder="Enter student name" 
+                               style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; box-sizing: border-box;">
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Student ID</label>
+                        <input type="text" id="studentId" placeholder="Enter student ID" 
+                               style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; box-sizing: border-box;">
+                    </div>
+                    <button onclick="addStudent()" 
+                            style="padding: 12px 25px; background: linear-gradient(45deg, #4CAF50, #45a049); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);">
+                        ➕ Add Student
+                    </button>
+                </div>
+            </div>
+
+            <!-- Date Selection -->
+            <div style="background: #f8f9fa; border-radius: 10px; padding: 25px; margin-bottom: 30px; border-left: 5px solid #2196F3;">
+                <h2 style="margin: 0 0 20px 0; color: #2c3e50; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2em;">📅</span> Select Date
+                </h2>
+                <div style="display: flex; gap: 15px; align-items: end; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Date</label>
+                        <input type="date" id="attendanceDate" 
+                               style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                    </div>
+                    <button onclick="loadAttendance()" 
+                            style="padding: 12px 25px; background: linear-gradient(45deg, #2196F3, #1976D2); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);">
+                        📋 Load Attendance
+                    </button>
+                </div>
+            </div>
+
+            <!-- Attendance Table -->
+            <div style="background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); overflow: hidden;">
+                <div style="background: linear-gradient(45deg, #34495e, #2c3e50); color: white; padding: 20px;">
+                    <h2 style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.2em;">📊</span> Attendance Record
+                        <span id="currentDate" style="margin-left: auto; font-size: 0.9em; opacity: 0.8;"></span>
+                    </h2>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table id="attendanceTable" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Student Name</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Student ID</th>
+                                <th style="padding: 15px; text-align: center; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Attendance</th>
+                                <th style="padding: 15px; text-align: center; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceBody">
+                            <tr>
+                                <td colspan="4" style="padding: 40px; text-align: center; color: #888; font-style: italic;">
+                                    No students added yet. Add students to start tracking attendance.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Summary Section -->
+            <div style="margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <div style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);">
+                    <div style="font-size: 2em; font-weight: bold;" id="totalPresent">0</div>
+                    <div style="opacity: 0.9;">Total Present</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #f44336, #d32f2f); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);">
+                    <div style="font-size: 2em; font-weight: bold;" id="totalAbsent">0</div>
+                    <div style="opacity: 0.9;">Total Absent</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #2196F3, #1976D2); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);">
+                    <div style="font-size: 2em; font-weight: bold;" id="totalStudents">0</div>
+                    <div style="opacity: 0.9;">Total Students</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #FF9800, #F57C00); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);">
+                    <div style="font-size: 2em; font-weight: bold;" id="attendancePercentage">0%</div>
+                    <div style="opacity: 0.9;">Attendance Rate</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let students = [];
+        let attendanceRecords = {};
+        let currentSelectedDate = '';
+
+        // Set today's date as default
+        document.getElementById('attendanceDate').value = new Date().toISOString().split('T')[0];
+        loadAttendance();
+
+        function addStudent() {
+            const name = document.getElementById('studentName').value.trim();
+            const id = document.getElementById('studentId').value.trim();
+            
+            if (!name || !id) {
+                alert('Please enter both student name and ID');
+                return;
+            }
+            
+            // Check for duplicate ID
+            if (students.some(student => student.id === id)) {
+                alert('Student ID already exists!');
+                return;
+            }
+            
+            students.push({ name: name, id: id });
+            
+            // Clear inputs
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentId').value = '';
+            
+            // Refresh attendance table
+            loadAttendance();
+            
+            // Success feedback
+            showNotification('Student added successfully!', 'success');
+        }
+
+        function loadAttendance() {
+            const selectedDate = document.getElementById('attendanceDate').value;
+            if (!selectedDate) {
+                alert('Please select a date');
+                return;
+            }
+            
+            currentSelectedDate = selectedDate;
+            document.getElementById('currentDate').textContent = new Date(selectedDate).toLocaleDateString();
+            
+            // Initialize attendance for this date if not exists
+            if (!attendanceRecords[selectedDate]) {
+                attendanceRecords[selectedDate] = {};
+            }
+            
+            renderAttendanceTable();
+            updateSummary();
+        }
+
+        function renderAttendanceTable() {
+            const tbody = document.getElementById('attendanceBody');
+            
+            if (students.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="padding: 40px; text-align: center; color: #888; font-style: italic;">
+                            No students added yet. Add students to start tracking attendance.
+                        </td>
+                    </tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = students.map((student, index) => {
+                const attendance = attendanceRecords[currentSelectedDate][student.id] || '';
+                const isPresent = attendance === 'present';
+                const isAbsent = attendance === 'absent';
+                
+                return `
+                    <tr style="border-bottom: 1px solid #eee; transition: background-color 0.3s;" 
+                        onmouseover="this.style.backgroundColor='#f8f9fa'" 
+                        onmouseout="this.style.backgroundColor='white'">
+                        <td style="padding: 15px; font-weight: 500;">${student.name}</td>
+                        <td style="padding: 15px; color: #666;">${student.id}</td>
+                        <td style="padding: 15px; text-align: center;">
+                            <span style="padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: 600; 
+                                         background: ${isPresent ? '#d4edda' : isAbsent ? '#f8d7da' : '#e2e3e5'}; 
+                                         color: ${isPresent ? '#155724' : isAbsent ? '#721c24' : '#6c757d'};">
+                                ${isPresent ? '✓ PRESENT' : isAbsent ? '✗ ABSENT' : '— NOT MARKED'}
+                            </span>
+                        </td>
+                        <td style="padding: 15px; text-align: center;">
+                            <button onclick="markAttendance('${student.id}', 'present')" 
+                                    style="padding: 8px 15px; margin: 0 5px; background: ${isPresent ? '#28a745' : '#6c757d'}; 
+                                           color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.3s;">
+                                Present
+                            </button>
+                            <button onclick="markAttendance('${student.id}', 'absent')" 
+                                    style="padding: 8px 15px; margin: 0 5px; background: ${isAbsent ? '#dc3545' : '#6c757d'}; 
+                                           color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.3s;">
+                                Absent
+                            </button>
+                        </td>
+                    </tr>`;
+            }).join('');
+        }
+
+        function markAttendance(studentId, status) {
+            if (!currentSelectedDate) {
+                alert('Please select a date first');
+                return;
+            }
+            
+            attendanceRecords[currentSelectedDate][studentId] = status;
+            renderAttendanceTable();
+            updateSummary();
+            
+            // Visual feedback
+            showNotification(`Attendance marked as ${status}`, 'info');
+        }
+
+        function updateSummary() {
+            const totalStudents = students.length;
+            let totalPresent = 0;
+            let totalAbsent = 0;
+            
+            if (currentSelectedDate && attendanceRecords[currentSelectedDate]) {
+                students.forEach(student => {
+                    const attendance = attendanceRecords[currentSelectedDate][student.id];
+                    if (attendance === 'present') totalPresent++;
+                    else if (attendance === 'absent') totalAbsent++;
+                });
+            }
+            
+            const attendancePercentage = totalStudents > 0 ? Math.round((totalPresent / totalStudents) * 100) : 0;
+            
+            document.getElementById('totalStudents').textContent = totalStudents;
+            document.getElementById('totalPresent').textContent = totalPresent;
+            document.getElementById('totalAbsent').textContent = totalAbsent;
+            document.getElementById('attendancePercentage').textContent = attendancePercentage + '%';
+        }
+
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.innerHTML = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 600;
+                z-index: 1000;
+                transition: all 0.3s;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Add input event listeners for better UX
+        document.getElementById('studentName').addEventListener('focus', function() {
+            this.style.borderColor = '#4CAF50';
+        });
+        
+        document.getElementById('studentName').addEventListener('blur', function() {
+            this.style.borderColor = '#ddd';
+        });
+        
+        document.getElementById('studentId').addEventListener('focus', function() {
+            this.style.borderColor = '#4CAF50';
+        });
+        
+        document.getElementById('studentId').addEventListener('blur', function() {
+            this.style.borderColor = '#ddd';
+        });
+
+        // Allow Enter key to add student
+        document.getElementById('studentName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addStudent();
+        });
+        
+        document.getElementById('studentId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addStudent();
+        });
+    </script>
 </body>
 </html>
