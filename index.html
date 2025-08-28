@@ -3,84 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Attendance Tracker</title>
+    <title>Student Attendance Tracker - IAM System</title>
 </head>
-<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #333;">
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #333;">
     
-    <div style="max-width: 1000px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden;">
-        
+    <!-- Login Screen -->
+    <div id="loginScreen" style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+        <div style="background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center;">
+            <div style="margin-bottom: 30px;">
+                <h1 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 2.2em; font-weight: 300;">🎓 Attendance System</h1>
+                <p style="color: #666; margin: 0; font-size: 1.1em;">Login to continue</p>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555; text-align: left;">Username</label>
+                <input type="text" id="loginUsername" placeholder="Enter your username" 
+                       style="width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; transition: border-color 0.3s; box-sizing: border-box;">
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555; text-align: left;">Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password" 
+                       style="width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; transition: border-color 0.3s; box-sizing: border-box;">
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555; text-align: left;">Login As</label>
+                <select id="userRole" style="width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+                    <option value="teacher">Teacher</option>
+                    <option value="student">Student</option>
+                </select>
+            </div>
+            
+            <button onclick="login()" 
+                    style="width: 100%; padding: 15px; background: linear-gradient(45deg, #4CAF50, #45a049); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3); margin-bottom: 20px;">
+                🔐 Login
+            </button>
+            
+            <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; text-align: left; font-size: 14px; color: #666;">
+                <h4 style="margin: 0 0 10px 0; color: #333;">Demo Credentials:</h4>
+                <p style="margin: 5px 0;"><strong>Teacher:</strong> teacher1 / pass123</p>
+                <p style="margin: 5px 0;"><strong>Students:</strong> john.doe / student123</p>
+                <p style="margin: 5px 0; padding-left: 20px;">jane.smith / student123</p>
+                <p style="margin: 5px 0; padding-left: 20px;">bob.wilson / student123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" style="display: none;">
         <!-- Header -->
-        <div style="background: linear-gradient(45deg, #4CAF50, #45a049); color: white; padding: 30px; text-align: center;">
-            <h1 style="margin: 0; font-size: 2.5em; font-weight: 300; letter-spacing: 2px;">📚 Student Attendance Tracker</h1>
-            <p style="margin: 10px 0 0 0; opacity: 0.9; font-size: 1.1em;">Track and manage student attendance with ease</p>
+        <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.2);">
+            <div>
+                <h2 style="margin: 0; color: white; display: flex; align-items: center; gap: 10px;">
+                    <span id="roleIcon">👨‍🏫</span>
+                    <span id="welcomeText">Welcome, Teacher</span>
+                </h2>
+                <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.8); font-size: 14px;" id="userInfo">teacher1@school.edu</p>
+            </div>
+            <button onclick="logout()" 
+                    style="padding: 10px 20px; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                🚪 Logout
+            </button>
         </div>
 
-        <div style="padding: 30px;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 30px 20px;">
             
-            <!-- Add Student Section -->
-            <div style="background: #f8f9fa; border-radius: 10px; padding: 25px; margin-bottom: 30px; border-left: 5px solid #4CAF50;">
-                <h2 style="margin: 0 0 20px 0; color: #2c3e50; display: flex; align-items: center; gap: 10px;">
-                    <span style="font-size: 1.2em;">👨‍🎓</span> Add New Student
-                </h2>
-                <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: end;">
-                    <div style="flex: 1; min-width: 200px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Student Name</label>
-                        <input type="text" id="studentName" placeholder="Enter student name" 
-                               style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; box-sizing: border-box;">
+            <!-- Teacher Dashboard -->
+            <div id="teacherDashboard" style="display: none;">
+                <!-- Add Student Section -->
+                <div style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 20px 0; color: #2c3e50; display: flex; align-items: center; gap: 10px;">
+                        <span>👨‍🎓</span> Add New Student
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end;">
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Student Name</label>
+                            <input type="text" id="newStudentName" placeholder="Enter student name" 
+                                   style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Student ID</label>
+                            <input type="text" id="newStudentId" placeholder="Enter student ID" 
+                                   style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Username</label>
+                            <input type="text" id="newStudentUsername" placeholder="Username for login" 
+                                   style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                        </div>
+                        <button onclick="addStudent()" 
+                                style="padding: 12px 25px; background: linear-gradient(45deg, #4CAF50, #45a049); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);">
+                            ➕ Add Student
+                        </button>
                     </div>
-                    <div style="flex: 1; min-width: 200px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Student ID</label>
-                        <input type="text" id="studentId" placeholder="Enter student ID" 
-                               style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; box-sizing: border-box;">
+                </div>
+
+                <!-- Date Selection -->
+                <div style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 20px 0; color: #2c3e50; display: flex; align-items: center; gap: 10px;">
+                        <span>📅</span> Select Date for Attendance
+                    </h3>
+                    <div style="display: flex; gap: 15px; align-items: end; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Date</label>
+                            <input type="date" id="attendanceDate" 
+                                   style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                        </div>
+                        <button onclick="loadAttendance()" 
+                                style="padding: 12px 25px; background: linear-gradient(45deg, #2196F3, #1976D2); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);">
+                            📋 Load Attendance
+                        </button>
                     </div>
-                    <button onclick="addStudent()" 
-                            style="padding: 12px 25px; background: linear-gradient(45deg, #4CAF50, #45a049); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);">
-                        ➕ Add Student
-                    </button>
                 </div>
             </div>
 
-            <!-- Date Selection -->
-            <div style="background: #f8f9fa; border-radius: 10px; padding: 25px; margin-bottom: 30px; border-left: 5px solid #2196F3;">
-                <h2 style="margin: 0 0 20px 0; color: #2c3e50; display: flex; align-items: center; gap: 10px;">
-                    <span style="font-size: 1.2em;">📅</span> Select Date
-                </h2>
-                <div style="display: flex; gap: 15px; align-items: end; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 200px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Date</label>
-                        <input type="date" id="attendanceDate" 
-                               style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+            <!-- Student Dashboard -->
+            <div id="studentDashboard" style="display: none;">
+                <div style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 20px 0; color: #2c3e50; display: flex; align-items: center; gap: 10px;">
+                        <span>📊</span> My Attendance Summary
+                    </h3>
+                    <div id="studentStats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                        <!-- Stats will be populated here -->
                     </div>
-                    <button onclick="loadAttendance()" 
-                            style="padding: 12px 25px; background: linear-gradient(45deg, #2196F3, #1976D2); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);">
-                        📋 Load Attendance
-                    </button>
                 </div>
             </div>
 
             <!-- Attendance Table -->
-            <div style="background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); overflow: hidden;">
+            <div style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden;">
                 <div style="background: linear-gradient(45deg, #34495e, #2c3e50); color: white; padding: 20px;">
-                    <h2 style="margin: 0; display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.2em;">📊</span> Attendance Record
+                    <h3 style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                        <span>📊</span> <span id="tableTitle">Attendance Record</span>
                         <span id="currentDate" style="margin-left: auto; font-size: 0.9em; opacity: 0.8;"></span>
-                    </h2>
+                    </h3>
                 </div>
                 
                 <div style="overflow-x: auto;">
                     <table id="attendanceTable" style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="background: #f8f9fa;">
-                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Student Name</th>
-                                <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Student ID</th>
-                                <th style="padding: 15px; text-align: center; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Attendance</th>
-                                <th style="padding: 15px; text-align: center; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Actions</th>
-                            </tr>
+                        <thead id="tableHeader">
+                            <!-- Header will be populated based on user role -->
                         </thead>
                         <tbody id="attendanceBody">
                             <tr>
                                 <td colspan="4" style="padding: 40px; text-align: center; color: #888; font-style: italic;">
-                                    No students added yet. Add students to start tracking attendance.
+                                    Please login to view attendance data.
                                 </td>
                             </tr>
                         </tbody>
@@ -88,87 +155,253 @@
                 </div>
             </div>
 
-            <!-- Summary Section -->
-            <div style="margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                <div style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);">
-                    <div style="font-size: 2em; font-weight: bold;" id="totalPresent">0</div>
-                    <div style="opacity: 0.9;">Total Present</div>
-                </div>
-                <div style="background: linear-gradient(135deg, #f44336, #d32f2f); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);">
-                    <div style="font-size: 2em; font-weight: bold;" id="totalAbsent">0</div>
-                    <div style="opacity: 0.9;">Total Absent</div>
-                </div>
-                <div style="background: linear-gradient(135deg, #2196F3, #1976D2); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);">
-                    <div style="font-size: 2em; font-weight: bold;" id="totalStudents">0</div>
-                    <div style="opacity: 0.9;">Total Students</div>
-                </div>
-                <div style="background: linear-gradient(135deg, #FF9800, #F57C00); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);">
-                    <div style="font-size: 2em; font-weight: bold;" id="attendancePercentage">0%</div>
-                    <div style="opacity: 0.9;">Attendance Rate</div>
+            <!-- Summary Section (Teacher only) -->
+            <div id="summarySection" style="margin-top: 30px; display: none;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);">
+                        <div style="font-size: 2em; font-weight: bold;" id="totalPresent">0</div>
+                        <div style="opacity: 0.9;">Total Present</div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f44336, #d32f2f); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);">
+                        <div style="font-size: 2em; font-weight: bold;" id="totalAbsent">0</div>
+                        <div style="opacity: 0.9;">Total Absent</div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #2196F3, #1976D2); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);">
+                        <div style="font-size: 2em; font-weight: bold;" id="totalStudents">0</div>
+                        <div style="opacity: 0.9;">Total Students</div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #FF9800, #F57C00); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);">
+                        <div style="font-size: 2em; font-weight: bold;" id="attendancePercentage">0%</div>
+                        <div style="opacity: 0.9;">Attendance Rate</div>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
-        // Data storage
-        let students = [];
+        // IAM System Data
+        const users = {
+            'teacher1': {
+                password: 'pass123',
+                role: 'teacher',
+                name: 'Dr. Smith',
+                email: 'teacher1@school.edu'
+            },
+            'john.doe': {
+                password: 'student123',
+                role: 'student',
+                name: 'John Doe',
+                email: 'john.doe@student.school.edu',
+                studentId: 'STU001'
+            },
+            'jane.smith': {
+                password: 'student123',
+                role: 'student',
+                name: 'Jane Smith',
+                email: 'jane.smith@student.school.edu',
+                studentId: 'STU002'
+            },
+            'bob.wilson': {
+                password: 'student123',
+                role: 'student',
+                name: 'Bob Wilson',
+                email: 'bob.wilson@student.school.edu',
+                studentId: 'STU003'
+            }
+        };
+
+        // Application Data
+        let students = [
+            { name: 'John Doe', id: 'STU001', username: 'john.doe' },
+            { name: 'Jane Smith', id: 'STU002', username: 'jane.smith' },
+            { name: 'Bob Wilson', id: 'STU003', username: 'bob.wilson' }
+        ];
         let attendanceRecords = {};
+        let currentUser = null;
         let currentSelectedDate = '';
 
         // Set today's date as default
-        document.getElementById('attendanceDate').value = new Date().toISOString().split('T')[0];
-        loadAttendance();
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('attendanceDate').value = today;
+        });
 
-        function addStudent() {
-            const name = document.getElementById('studentName').value.trim();
-            const id = document.getElementById('studentId').value.trim();
-            
-            if (!name || !id) {
-                alert('Please enter both student name and ID');
+        function login() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const role = document.getElementById('userRole').value;
+
+            if (!username || !password) {
+                showNotification('Please enter both username and password', 'error');
                 return;
             }
-            
-            // Check for duplicate ID
-            if (students.some(student => student.id === id)) {
-                alert('Student ID already exists!');
+
+            const user = users[username];
+            if (!user || user.password !== password || user.role !== role) {
+                showNotification('Invalid credentials or role mismatch', 'error');
                 return;
             }
+
+            currentUser = { username, ...user };
             
-            students.push({ name: name, id: id });
+            // Hide login screen and show main app
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
             
-            // Clear inputs
-            document.getElementById('studentName').value = '';
-            document.getElementById('studentId').value = '';
-            
-            // Refresh attendance table
+            // Set up user interface based on role
+            setupUserInterface();
             loadAttendance();
             
-            // Success feedback
+            showNotification(`Welcome, ${user.name}!`, 'success');
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('mainApp').style.display = 'none';
+            
+            // Clear login form
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('userRole').value = 'teacher';
+            
+            showNotification('Logged out successfully', 'info');
+        }
+
+        function setupUserInterface() {
+            const roleIcon = document.getElementById('roleIcon');
+            const welcomeText = document.getElementById('welcomeText');
+            const userInfo = document.getElementById('userInfo');
+            const teacherDashboard = document.getElementById('teacherDashboard');
+            const studentDashboard = document.getElementById('studentDashboard');
+            const summarySection = document.getElementById('summarySection');
+            const tableTitle = document.getElementById('tableTitle');
+
+            if (currentUser.role === 'teacher') {
+                roleIcon.textContent = '👨‍🏫';
+                welcomeText.textContent = `Welcome, ${currentUser.name}`;
+                userInfo.textContent = currentUser.email;
+                teacherDashboard.style.display = 'block';
+                studentDashboard.style.display = 'none';
+                summarySection.style.display = 'block';
+                tableTitle.textContent = 'Class Attendance Record';
+                setupTeacherTable();
+            } else {
+                roleIcon.textContent = '👨‍🎓';
+                welcomeText.textContent = `Welcome, ${currentUser.name}`;
+                userInfo.textContent = currentUser.email;
+                teacherDashboard.style.display = 'none';
+                studentDashboard.style.display = 'block';
+                summarySection.style.display = 'none';
+                tableTitle.textContent = 'My Attendance Record';
+                setupStudentTable();
+                updateStudentStats();
+            }
+        }
+
+        function setupTeacherTable() {
+            const tableHeader = document.getElementById('tableHeader');
+            tableHeader.innerHTML = `
+                <tr style="background: #f8f9fa;">
+                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Student Name</th>
+                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Student ID</th>
+                    <th style="padding: 15px; text-align: center; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Attendance</th>
+                    <th style="padding: 15px; text-align: center; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Actions</th>
+                </tr>
+            `;
+        }
+
+        function setupStudentTable() {
+            const tableHeader = document.getElementById('tableHeader');
+            tableHeader.innerHTML = `
+                <tr style="background: #f8f9fa;">
+                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Date</th>
+                    <th style="padding: 15px; text-align: center; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Status</th>
+                    <th style="padding: 15px; text-align: center; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6;">Marked By</th>
+                </tr>
+            `;
+        }
+
+        function addStudent() {
+            if (currentUser.role !== 'teacher') {
+                showNotification('Access denied: Teacher privileges required', 'error');
+                return;
+            }
+
+            const name = document.getElementById('newStudentName').value.trim();
+            const id = document.getElementById('newStudentId').value.trim();
+            const username = document.getElementById('newStudentUsername').value.trim();
+            
+            if (!name || !id || !username) {
+                showNotification('Please fill in all fields', 'error');
+                return;
+            }
+            
+            // Check for duplicates
+            if (students.some(student => student.id === id)) {
+                showNotification('Student ID already exists!', 'error');
+                return;
+            }
+            
+            if (users[username]) {
+                showNotification('Username already exists!', 'error');
+                return;
+            }
+            
+            // Add student to system
+            students.push({ name, id, username });
+            users[username] = {
+                password: 'student123',
+                role: 'student',
+                name: name,
+                email: `${username}@student.school.edu`,
+                studentId: id
+            };
+            
+            // Clear inputs
+            document.getElementById('newStudentName').value = '';
+            document.getElementById('newStudentId').value = '';
+            document.getElementById('newStudentUsername').value = '';
+            
+            loadAttendance();
             showNotification('Student added successfully!', 'success');
         }
 
         function loadAttendance() {
+            if (currentUser.role === 'teacher') {
+                loadTeacherAttendance();
+            } else {
+                loadStudentAttendance();
+            }
+        }
+
+        function loadTeacherAttendance() {
             const selectedDate = document.getElementById('attendanceDate').value;
             if (!selectedDate) {
-                alert('Please select a date');
+                showNotification('Please select a date', 'error');
                 return;
             }
             
             currentSelectedDate = selectedDate;
             document.getElementById('currentDate').textContent = new Date(selectedDate).toLocaleDateString();
             
-            // Initialize attendance for this date if not exists
             if (!attendanceRecords[selectedDate]) {
                 attendanceRecords[selectedDate] = {};
             }
             
-            renderAttendanceTable();
+            renderTeacherTable();
             updateSummary();
         }
 
-        function renderAttendanceTable() {
+        function loadStudentAttendance() {
+            currentSelectedDate = new Date().toISOString().split('T')[0];
+            document.getElementById('currentDate').textContent = 'All Records';
+            renderStudentTable();
+            updateStudentStats();
+        }
+
+        function renderTeacherTable() {
             const tbody = document.getElementById('attendanceBody');
             
             if (students.length === 0) {
@@ -181,8 +414,8 @@
                 return;
             }
             
-            tbody.innerHTML = students.map((student, index) => {
-                const attendance = attendanceRecords[currentSelectedDate][student.id] || '';
+            tbody.innerHTML = students.map(student => {
+                const attendance = attendanceRecords[currentSelectedDate]?.[student.id] || '';
                 const isPresent = attendance === 'present';
                 const isAbsent = attendance === 'absent';
                 
@@ -215,17 +448,71 @@
             }).join('');
         }
 
-        function markAttendance(studentId, status) {
-            if (!currentSelectedDate) {
-                alert('Please select a date first');
+        function renderStudentTable() {
+            const tbody = document.getElementById('attendanceBody');
+            const studentId = currentUser.studentId;
+            
+            // Get all attendance records for this student
+            let studentRecords = [];
+            for (const [date, records] of Object.entries(attendanceRecords)) {
+                if (records[studentId]) {
+                    studentRecords.push({
+                        date: date,
+                        status: records[studentId],
+                        markedBy: 'Teacher'
+                    });
+                }
+            }
+            
+            if (studentRecords.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="3" style="padding: 40px; text-align: center; color: #888; font-style: italic;">
+                            No attendance records found.
+                        </td>
+                    </tr>`;
                 return;
             }
             
+            // Sort by date (newest first)
+            studentRecords.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            tbody.innerHTML = studentRecords.map(record => `
+                <tr style="border-bottom: 1px solid #eee; transition: background-color 0.3s;" 
+                    onmouseover="this.style.backgroundColor='#f8f9fa'" 
+                    onmouseout="this.style.backgroundColor='white'">
+                    <td style="padding: 15px; font-weight: 500;">${new Date(record.date).toLocaleDateString()}</td>
+                    <td style="padding: 15px; text-align: center;">
+                        <span style="padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: 600; 
+                                     background: ${record.status === 'present' ? '#d4edda' : '#f8d7da'}; 
+                                     color: ${record.status === 'present' ? '#155724' : '#721c24'};">
+                            ${record.status === 'present' ? '✓ PRESENT' : '✗ ABSENT'}
+                        </span>
+                    </td>
+                    <td style="padding: 15px; text-align: center; color: #666;">${record.markedBy}</td>
+                </tr>
+            `).join('');
+        }
+
+        function markAttendance(studentId, status) {
+            if (currentUser.role !== 'teacher') {
+                showNotification('Access denied: Teacher privileges required', 'error');
+                return;
+            }
+            
+            if (!currentSelectedDate) {
+                showNotification('Please select a date first', 'error');
+                return;
+            }
+            
+            if (!attendanceRecords[currentSelectedDate]) {
+                attendanceRecords[currentSelectedDate] = {};
+            }
+            
             attendanceRecords[currentSelectedDate][studentId] = status;
-            renderAttendanceTable();
+            renderTeacherTable();
             updateSummary();
             
-            // Visual feedback
             showNotification(`Attendance marked as ${status}`, 'info');
         }
 
@@ -250,8 +537,47 @@
             document.getElementById('attendancePercentage').textContent = attendancePercentage + '%';
         }
 
+        function updateStudentStats() {
+            const studentId = currentUser.studentId;
+            let totalDays = 0;
+            let presentDays = 0;
+            let absentDays = 0;
+            
+            // Count attendance across all dates
+            for (const [date, records] of Object.entries(attendanceRecords)) {
+                if (records[studentId]) {
+                    totalDays++;
+                    if (records[studentId] === 'present') {
+                        presentDays++;
+                    } else {
+                        absentDays++;
+                    }
+                }
+            }
+            
+            const attendanceRate = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
+            
+            document.getElementById('studentStats').innerHTML = `
+                <div style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);">
+                    <div style="font-size: 2em; font-weight: bold;">${presentDays}</div>
+                    <div style="opacity: 0.9;">Days Present</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #f44336, #d32f2f); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);">
+                    <div style="font-size: 2em; font-weight: bold;">${absentDays}</div>
+                    <div style="opacity: 0.9;">Days Absent</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #2196F3, #1976D2); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);">
+                    <div style="font-size: 2em; font-weight: bold;">${totalDays}</div>
+                    <div style="opacity: 0.9;">Total Days</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #FF9800, #F57C00); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);">
+                    <div style="font-size: 2em; font-weight: bold;">${attendanceRate}%</div>
+                    <div style="opacity: 0.9;">Attendance Rate</div>
+                </div>
+            `;
+        }
+
         function showNotification(message, type) {
-            // Create notification element
             const notification = document.createElement('div');
             notification.innerHTML = message;
             notification.style.cssText = `
@@ -259,19 +585,23 @@
                 top: 20px;
                 right: 20px;
                 padding: 15px 20px;
-                border-radius: 5px;
+                border-radius: 8px;
                 color: white;
                 font-weight: 600;
                 z-index: 1000;
                 transition: all 0.3s;
-                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+                backdrop-filter: blur(10px);
+                background: ${type === 'success' ? 'rgba(40, 167, 69, 0.9)' : 
+                            type === 'error' ? 'rgba(220, 53, 69, 0.9)' : 
+                            'rgba(23, 162, 184, 0.9)'};
+                box-shadow: 0 8px 32px rgba(0,0,0,0.2);
             `;
             
             document.body.appendChild(notification);
             
-            // Remove after 3 seconds
             setTimeout(() => {
                 notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
                 setTimeout(() => {
                     if (notification.parentNode) {
                         notification.parentNode.removeChild(notification);
@@ -280,31 +610,80 @@
             }, 3000);
         }
 
-        // Add input event listeners for better UX
-        document.getElementById('studentName').addEventListener('focus', function() {
-            this.style.borderColor = '#4CAF50';
-        });
-        
-        document.getElementById('studentName').addEventListener('blur', function() {
-            this.style.borderColor = '#ddd';
-        });
-        
-        document.getElementById('studentId').addEventListener('focus', function() {
-            this.style.borderColor = '#4CAF50';
-        });
-        
-        document.getElementById('studentId').addEventListener('blur', function() {
-            this.style.borderColor = '#ddd';
+        // Event listeners for better UX
+        document.addEventListener('DOMContentLoaded', function() {
+            // Focus styles for login inputs
+            ['loginUsername', 'loginPassword'].forEach(id => {
+                const input = document.getElementById(id);
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#4CAF50';
+                    this.style.boxShadow = '0 0 0 3px rgba(76, 175, 80, 0.1)';
+                });
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#ddd';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Allow Enter key for login
+            document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') login();
+            });
+
+            // Focus styles for form inputs
+            document.addEventListener('focusin', function(e) {
+                if (e.target.tagName === 'INPUT' && e.target.type !== 'button') {
+                    e.target.style.borderColor = '#4CAF50';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(76, 175, 80, 0.1)';
+                }
+            });
+
+            document.addEventListener('focusout', function(e) {
+                if (e.target.tagName === 'INPUT' && e.target.type !== 'button') {
+                    e.target.style.borderColor = '#ddd';
+                    e.target.style.boxShadow = 'none';
+                }
+            });
+
+            // Hover effects for buttons
+            document.addEventListener('mouseover', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    e.target.style.transform = 'translateY(-2px)';
+                    e.target.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+                }
+            });
+
+            document.addEventListener('mouseout', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    e.target.style.transform = 'translateY(0)';
+                }
+            });
         });
 
-        // Allow Enter key to add student
-        document.getElementById('studentName').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') addStudent();
-        });
-        
-        document.getElementById('studentId').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') addStudent();
-        });
+        // Initialize some sample attendance data for demo
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        const dayBefore = new Date(today);
+        dayBefore.setDate(dayBefore.getDate() - 2);
+
+        attendanceRecords[today.toISOString().split('T')[0]] = {
+            'STU001': 'present',
+            'STU002': 'present',
+            'STU003': 'absent'
+        };
+
+        attendanceRecords[yesterday.toISOString().split('T')[0]] = {
+            'STU001': 'present',
+            'STU002': 'absent',
+            'STU003': 'present'
+        };
+
+        attendanceRecords[dayBefore.toISOString().split('T')[0]] = {
+            'STU001': 'absent',
+            'STU002': 'present',
+            'STU003': 'present'
+        };
     </script>
 </body>
 </html>
